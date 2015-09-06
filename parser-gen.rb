@@ -15,21 +15,28 @@ require 'jsonlint'
 require 'json'
 require 'crack'
 
-# start of Advantages
 basic_set_xml = File.open("gcs-library/Advantages/BasicSet.adq")
-action_set_xml = File.open("gcs-library/Advantages/Action.adq")
 
-basic_adv_json = Crack::XML.parse(basic_set_xml)
-action_adv_json = Crack::XML.parse(action_set_xml)
+basic_adv_hash = Crack::XML.parse(basic_set_xml)
+action_adv_hash = Crack::XML.parse(action_set_xml)
 
-File.open("gcs-json/advantages/basic_set.json", "w") {|file| file.write(basic_adv_json)}
+# File.open("gcs-json/advantages/basic_set.json", "w") {|file| file.write(basic_adv_json)}
 # File.open("gcs-json/advantages/action_set.json", "w") {|file| file.write(action_adv_json)}
 
-basic_set = File.read("gcs-json/advantages/basic_set.json")
+# basic_set = File.read("gcs-json/advantages/basic_set.json")
 
 # basic_set_hash = JSON.parse(basic_set)
 
-# basic_set_hash["advantage"].each do |advantage_json|
+
+puts "-"*45
+puts "Advantages/Disadvantages"
+puts "-"*45
+
+basic_adv_hash["advantage_list"]["advantage"].each do |adv|
+  p adv["name"]
+end
+
+# basic_set["advantage_list"]["advantages"].each do |advantage_json|
 #   puts advantage_json
 #   puts "\n\n"
 # end
