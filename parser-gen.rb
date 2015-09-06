@@ -6,7 +6,8 @@
 
 # Problems:
 # - json as is is not valid
-# - file needs standardization (downcase all keys and values)
+# - file needs standardization (downcase all keys and values)?
+# - Turns out some also are attributes. What should we do with these?
 
 # Should it just save it all into one big file?
 
@@ -18,25 +19,58 @@ require 'crack'
 basic_set_xml = File.open("gcs-library/Advantages/BasicSet.adq")
 
 basic_adv_hash = Crack::XML.parse(basic_set_xml)
-action_adv_hash = Crack::XML.parse(action_set_xml)
 
 # File.open("gcs-json/advantages/basic_set.json", "w") {|file| file.write(basic_adv_json)}
-# File.open("gcs-json/advantages/action_set.json", "w") {|file| file.write(action_adv_json)}
 
 # basic_set = File.read("gcs-json/advantages/basic_set.json")
 
 # basic_set_hash = JSON.parse(basic_set)
 
+def hash_parser(hash, target_hash)
+  hash["advantage_list"]["advantage"].each do |adv|
+    p adv["name"].downcase!
+    adv["type"].downcase!
+    if adv["modifiers"].is_a?(Array)
+      if adv["modifiers"].empty? == true
+        adv["modifiers"].each do |mod|
+          mod["name"].downcase!
+        end
+      end
+    end
+    if adv["categories"]["category"].is_a?(String)
+      if adv["categories"]["category"].downcase! == "disadvantage"
+        p "disadvantage"
+        target_hash["disadvantages"] << adv
+      elsif adv["categories"]["category"].downcase! == "advantage"
+        p "advantage"
+        target_hash["advantages"] << adv
+      end
+    elsif adv["categories"]["category"].is_a?(Array)
+      if adv["categories"]["category"].include?("Disadvantage")
+        p "disadvantage"
+        adv["categories"]["category"].each { |e| p e.downcase! }
+        target_hash["disadvantages"] << adv
+      elsif adv["categories"]["category"].include?("Advantage")
+        p "advantage"
+        adv["categories"]["category"].each { |e| p e.downcase! }
+        target_hash["advantages"] << adv
+      end
+    end
+  end
+end
+
+def advantage_string?(obj, target_hash)
+
+end
+
+def advantage_array?(obj, target_hash)
+
+end
+
+basic_set = {"advantages"=>[], "disadvantages"=>[]};
 
 puts "-"*45
 puts "Advantages/Disadvantages"
 puts "-"*45
 
-basic_adv_hash["advantage_list"]["advantage"].each do |adv|
-  p adv["name"]
-end
-
-# basic_set["advantage_list"]["advantages"].each do |advantage_json|
-#   puts advantage_json
-#   puts "\n\n"
-# end
+hash_parser(basic_adv_hash, basic_set)
