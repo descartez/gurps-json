@@ -38,6 +38,8 @@ def hash_parser(hash, target_hash)
       end
     elsif !adv["modifier"].is_a?(Array) && !adv["modifier"].nil?
       adv["modifier"]["name"].downcase!
+      holding_array = [adv["modifier"]]
+      adv["modifier"] = holding_array
     end
     if adv["categories"]["category"].is_a?(String)
       advantage_string?(adv, target_hash)
