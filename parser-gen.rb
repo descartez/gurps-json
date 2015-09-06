@@ -4,6 +4,10 @@
 # 3. convert grabbed file to JSON
   # a. save in new directory
 
+# Problems:
+# - json as is is not valid
+# - file needs standardization (downcase all keys and values)
+
 # Should it just save it all into one big file?
 
 require 'fileutils'
