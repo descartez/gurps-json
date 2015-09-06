@@ -7,4 +7,6 @@
 require 'fileutils'
 require 'crack'
 
-p basic_adv_set = Crack::XML.parse("../gcs/Library/Advantages/BasicSet.adq")
+p f = File.open("gcs-library/Advantages/BasicSet.adq")
+
+p basic_adv_set = Crack::XML.parse(f)
