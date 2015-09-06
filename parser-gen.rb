@@ -9,6 +9,8 @@
 # - file needs standardization (downcase all keys and values)? DONE
 # - Turns out some also are attributes. What should we do with these?
 # - some objects only have one modifier, which means it is not in an array. Needs to be in array.
+  # - Same problem with advantage + attribute || disadvantage + attribute objects.
+    # They have one element but they still need to be placed in array
 
 # Should it just save it all into one big file?
 
