@@ -7,6 +7,7 @@
 # Should it just save it all into one big file?
 
 require 'fileutils'
+require 'jsonlint'
 require 'json'
 require 'crack'
 
@@ -18,13 +19,13 @@ basic_adv_json = Crack::XML.parse(basic_set_xml)
 action_adv_json = Crack::XML.parse(action_set_xml)
 
 File.open("gcs-json/advantages/basic_set.json", "w") {|file| file.write(basic_adv_json)}
-File.open("gcs-json/advantages/action_set.json", "w") {|file| file.write(action_adv_json)}
+# File.open("gcs-json/advantages/action_set.json", "w") {|file| file.write(action_adv_json)}
 
 basic_set = File.read("gcs-json/advantages/basic_set.json")
 
-basic_set_hash = JSON.parse(basic_set)
+# basic_set_hash = JSON.parse(basic_set)
 
-basic_set_hash["advantage_list"]["advantage_container"].each do |advantage_json|
-  puts advantage_json
-  puts "\n\n"
-end
+# basic_set_hash["advantage"].each do |advantage_json|
+#   puts advantage_json
+#   puts "\n\n"
+# end
