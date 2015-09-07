@@ -22,7 +22,7 @@ basic_set_xml = File.open("gcs-library/Advantages/BasicSet.adq")
 
 basic_adv_hash = Crack::XML.parse(basic_set_xml)
 
-# File.open("gcs-json/advantages/basic_set.json", "w") {|file| file.write(basic_adv_json)}
+
 
 # basic_set = File.read("gcs-json/advantages/basic_set.json")
 
@@ -38,7 +38,7 @@ def hash_parser(hash, target_hash)
           mod["name"].downcase!
         end
       end
-    elsif !adv["modifier"].is_a?(Array) && !adv["modifier"].nil?
+    elsif adv["modifier"].is_a?(Array) == false && adv["modifier"].nil? == false
       adv["modifier"]["name"].downcase!
       holding_array = [adv["modifier"]]
       adv["modifier"] = holding_array
@@ -77,4 +77,7 @@ basic_set = {"advantages"=>[], "disadvantages"=>[]};
 # puts "-"*45
 p "running!"
 hash_parser(basic_adv_hash, basic_set)
+
+File.open("gcs-json/advantages/basic_set.json", "w") {|file| file.write(basic_set.to_json)}
+
 p "done!"
