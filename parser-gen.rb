@@ -18,7 +18,13 @@ require 'fileutils'
 require 'json'
 require 'crack'
 
-  def hash_parser(hash, target_hash)
+class GurpsParser
+
+  def initialize
+
+  end
+
+  def basic_hash_parser(hash, target_hash)
     hash["advantage_list"]["advantage"].each do |adv|
       adv["name"].downcase!
       adv["type"].downcase!
@@ -39,6 +45,10 @@ require 'crack'
         advantage_array?(adv, target_hash)
       end
     end
+  end
+
+  def action_hash_parser
+
   end
 
   def advantage_string?(obj, target_hash)
@@ -63,27 +73,32 @@ require 'crack'
     File.open(path, "w") {|file| file.write(JSON.pretty_generate(hash))}
   end
 
+end
+
 basic_set = {"advantages"=>[], "disadvantages"=>[]};
 action_set = {"advantages"=>[], "disadvantages"=>[]}
 
 # puts "-"*45
 # puts "Advantages/Disadvantages"
 # puts "-"*45
+
+gurps = GurpsParser.new
+
 p "running!"
 # ---Basic Set---
 basic_set_xml = File.open("gcs-library/Advantages/BasicSet.adq")
 
 basic_adv_hash = Crack::XML.parse(basic_set_xml)
 
-hash_parser(basic_adv_hash, basic_set)
-file_writer("gcs-json/advantages/basic_set.json",basic_set)
+gurps.basic_hash_parser(basic_adv_hash, basic_set)
+gurps.file_writer("gcs-json/advantages/basic_set.json",basic_set)
 
 # ---Action Set---
-# action_set_xml =  File.open("gcs-library/Advantages/Action.adq")
+action_set_xml =  File.open("gcs-library/Advantages/Action.adq")
 
-# action_adv_hash = Crack::XML.parse(action_set_xml)
+p action_adv_hash = Crack::XML.parse(action_set_xml)
 
-# hash_parser(action_adv_hash, action_set)
-# file_writer("gcs-json/advantages/action_set.json", action_set)
+# gurps.basic_hash_parser(action_adv_hash, action_set)
+# gurps.file_writer("gcs-json/advantages/action_set.json", action_set)
 
 p "done!"
