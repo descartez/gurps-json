@@ -29,7 +29,7 @@ class GurpsParser
       adv["name"].downcase!
       adv["type"].downcase!
       if adv["modifier"].is_a?(Array)
-        if adv["modifier"].empty? == false
+        if adv["modifier"].empty? == false && adv["modifier"].nil? == false
           adv["modifier"].each do |mod|
             mod["name"].downcase!
           end
@@ -47,8 +47,32 @@ class GurpsParser
     end
   end
 
-  def action_hash_parser
-
+  def action_hash_parser(hash, target_hash)
+    if hash["advantage_list"]["advantage"] == nil
+     p "is nil"
+    else
+     p "not nil"
+      hash["advantage_list"]["advantage"].each do |adv|
+        adv["name"].downcase!
+        adv["type"].downcase!
+        if adv["modifier"].is_a?(Array)
+          if adv["modifier"].empty? == false && adv["modifier"].nil? == false
+            adv["modifier"].each do |mod|
+              mod["name"].downcase!
+            end
+          end
+        elsif adv["modifier"].is_a?(Array) == false && adv["modifier"].nil? == false
+          adv["modifier"]["name"].downcase!
+          holding_array = [adv["modifier"]]
+          adv["modifier"] = holding_array
+        end
+        if adv["categories"]["category"].is_a?(String)
+          advantage_string?(adv, target_hash)
+        elsif adv["categories"]["category"].is_a?(Array)
+          advantage_array?(adv, target_hash)
+        end
+      end
+    end
   end
 
   def advantage_string?(obj, target_hash)
@@ -98,7 +122,7 @@ action_set_xml =  File.open("gcs-library/Advantages/Action.adq")
 
 p action_adv_hash = Crack::XML.parse(action_set_xml)
 
-# gurps.basic_hash_parser(action_adv_hash, action_set)
-# gurps.file_writer("gcs-json/advantages/action_set.json", action_set)
+gurps.action_hash_parser(action_adv_hash, action_set)
+gurps.file_writer("gcs-json/advantages/action_set.json", action_set)
 
 p "done!"
